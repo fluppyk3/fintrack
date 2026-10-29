@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#f5f7f7" />
+  <meta name="theme-color" content="#071018" />
   <meta name="description" content="FinTrack — suas finanças no seu ritmo." />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css?v=7" />
-  <title>FinTrack — sua vida financeira, em equilíbrio</title>
+  <link rel="stylesheet" href="styles.css?v=8" />
+  <title>FinTrack — seu dinheiro, sob seu controle</title>
 </head>
 <body>
   <div class="app-shell">
@@ -34,7 +34,10 @@
       <header class="topbar">
         <div class="mobile-brand"><span class="brand-mark">f</span><span>fintrack</span></div>
         <div class="topbar-spacer"></div>
-        <button class="icon-button" id="themeBtn" aria-label="Alternar tema" title="Alternar tema">☼</button>
+        <button class="icon-button" id="backupQuick" data-action="export-backup" aria-label="Exportar backup" title="Exportar backup">⇩</button>
+        <button class="icon-button" id="installBtn" aria-label="Instalar FinTrack" title="Instalar aplicativo" hidden>↓</button>
+        <button class="icon-button" id="settingsQuick" aria-label="Abrir preferências" title="Preferências">⚙</button>
+        <button class="icon-button" id="themeBtn" aria-label="Alternar tema" title="Alternar tema">◐</button>
         <button class="avatar" aria-label="Abrir perfil" data-page="profile">M</button>
       </header>
       <div class="content" id="content"></div>
@@ -45,7 +48,7 @@
     <button class="mobile-nav-item active" data-page="home"><span>⌂</span>Início</button>
     <button class="mobile-nav-item" data-page="cards"><span>▤</span>Cartões</button>
     <button class="mobile-add" id="mobileAdd" aria-label="Adicionar movimentação">＋</button>
-    <button class="mobile-nav-item" data-page="planning"><span>◷</span>Planejar</button>
+    <button class="mobile-nav-item" data-page="statement"><span>≋</span>Lançamentos</button>
     <button class="mobile-nav-item" data-page="more"><span>···</span>Mais</button>
   </nav>
 
@@ -86,6 +89,6 @@
   <dialog id="paymentDialog" class="modal"><form id="paymentForm"><div class="modal-heading"><div><span class="eyebrow">REGISTRAR SAÍDA</span><h2>Pagamento da parcela</h2></div><button type="button" class="icon-button close-dialog">×</button></div><input type="hidden" id="paymentObligationId"/><div id="paymentContext" class="payment-context"></div><label class="field"><span>Valor pago (R$)</span><input id="obligationPaymentAmount" inputmode="decimal" required/></label><label class="field"><span>Data efetiva</span><input id="obligationPaymentDate" type="date" required/></label><div id="paymentError" class="form-error" role="alert"></div><div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button primary" type="submit">Confirmar pagamento</button></div></form></dialog>
   <dialog id="cardPaymentDialog" class="modal"><form id="cardPaymentForm"><div class="modal-heading"><div><span class="eyebrow">FATURA DE CARTÃO</span><h2>Registrar pagamento</h2></div><button type="button" class="icon-button close-dialog">×</button></div><input type="hidden" id="cardInvoiceId"/><div id="cardPaymentContext" class="payment-context"></div><label class="field"><span>Valor pago (R$)</span><input id="cardPaymentAmount" inputmode="decimal" required/></label><label class="field"><span>Conta de saída</span><select id="cardPaymentAccount"></select></label><label class="field"><span>Data efetiva</span><input id="cardPaymentDate" type="date" required/></label><div id="cardPaymentError" class="form-error" role="alert"></div><div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button primary" type="submit">Confirmar pagamento</button></div></form></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="app.js?v=10"></script>
+  <script type="module" src="app.js?v=11"></script>
 </body>
 </html>

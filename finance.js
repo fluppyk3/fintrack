@@ -26,6 +26,15 @@ export function consolidatedBalance(accounts, transactions) {
   return accounts.reduce((sum, account) => sum + balanceForAccount(account, transactions), 0);
 }
 
+/** Ticket/refeição accounts are separate benefits and must not inflate bank balance totals. */
+export function isBenefitAccount(account) {
+  return /ticket|refei[cç][aã]o|aliment/i.test(`${account?.name || ''} ${account?.kind || ''}`);
+}
+
+export function bankAccounts(accounts) {
+  return accounts.filter(account => !isBenefitAccount(account));
+}
+
 export function budgetUsage(transactions, category, month) {
   return transactions.filter(tx => tx.date.startsWith(month) && isRealized(tx) && tx.type === 'expense' && tx.category === category).reduce((sum, tx) => sum + tx.amountCents, 0);
 }
