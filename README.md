@@ -2,6 +2,12 @@
 
 Aplicativo web responsivo e instalável para registro local de movimentações pessoais. Projeto criado do zero. O ZIP antigo foi consultado somente como referência funcional; nenhum arquivo-fonte dele foi reutilizado.
 
+## FinTrack Dark Analytics
+
+O painel inicial usa um tema azul-marinho, indicadores em verde-turquesa, evolução de saldo em SVG e categorias/lançamentos filtrados pelo mês escolhido. Os cálculos continuam usando centavos inteiros e as regras de `finance.js`; o seletor só altera a visualização. A linha histórica é exibida apenas quando há movimentações realizadas suficientes para formar um histórico.
+
+Para acompanhar um benefício separado, cadastre uma conta com “Ticket”, “Refeição” ou “Alimentação” no nome e lance seus créditos e gastos nessa conta. Ela aparece separada no painel e não aumenta o saldo bancário consolidado. O FinTrack original não tinha campo próprio nem saldo inicial específico para esse benefício.
+
 ## Rodar localmente
 
 Sirva esta pasta em HTTP (service workers não funcionam em `file://`). Com Node.js instalado, por exemplo:
@@ -28,7 +34,7 @@ Aplicação publicada em [https://fluppyk3.github.io/fintrack/](https://fluppyk3
 - Limites mensais por categoria, resumo do mês e gráfico derivado dos lançamentos locais.
 - Cartões com compras no crédito à vista ou parceladas, faturas por vencimento, limite calculado dinamicamente e pagamento parcial ou total por conta bancária. A compra aparece como despesa uma única vez; a quitação da fatura só reduz o saldo bancário. Dias de fechamento e vencimento aceitam 1 a 31, limitados ao último dia real de cada mês.
 - Importação CSV com validação e detecção de duplicatas; exportação CSV e backup JSON restaurável, com confirmação e cópia de segurança automática.
-- Tema claro/escuro, foto de perfil com upload de até 10 MB (imagem reduzida localmente), interface responsiva e cache do aplicativo para acesso offline após a primeira visita.
+- Tema escuro premium e alternância claro/escuro, foto de perfil com upload de até 10 MB (imagem reduzida localmente), interface responsiva e cache do aplicativo para acesso offline após a primeira visita.
 - Testes automatizados das regras de saldo, transferências, orçamento, calendário, pagamentos parciais e cálculos de fatura/parcelas de cartão.
 
 ## Dados, sincronização e privacidade
@@ -39,4 +45,4 @@ Os dados e o perfil são salvos em `localStorage` no navegador/dispositivo atual
 
 Este é um app de controle local, não um banco conectado. Obrigações e faturas não disparam pagamentos automaticamente; é necessário confirmar cada pagamento. Criptoativos, cotações de mercado, projeção de fluxo de caixa de 12 meses, sincronização e autenticação segura não estão implementados. Compras de cartão com faturas já estão integradas à contabilização local. Não são exibidos preços cripto nem movimentações financeiras demonstrativas.
 
-O service worker armazena apenas os arquivos do app; os dados locais permanecem no armazenamento do navegador. Para instalar no Android, abra a aplicação servida em HTTPS no Chrome e use “Instalar app”/“Adicionar à tela inicial”. No PC, abra o endereço no navegador; instalação PWA é oferecida por navegadores compatíveis.
+O service worker armazena apenas os arquivos do app; os dados locais permanecem no armazenamento do navegador. O manifesto inclui ícones PNG de 192 e 512 px, escopo relativo para GitHub Pages e tela independente. Para instalar no Android, abra a aplicação servida em HTTPS no Chrome e use “Instalar app”/“Adicionar à tela inicial”. No PC, abra o endereço no navegador; instalação PWA é oferecida por navegadores compatíveis. A instalação em um aparelho Android e o uso offline real precisam ser confirmados no dispositivo.

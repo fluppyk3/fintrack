@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, nextObligationDate, obligationRemainingCents, splitInstallmentAmounts, totalsForMonth, validateTransaction } from './finance.js';
+import { addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, bankAccounts, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, isBenefitAccount, nextObligationDate, obligationRemainingCents, splitInstallmentAmounts, totalsForMonth, validateTransaction } from './finance.js';
 
 const accounts = [{id:'a',balanceCents:50000},{id:'b',balanceCents:10000}];
 const txs = [
@@ -15,6 +15,14 @@ test('saldo consolidado exclui pendências e preserva transferências internas',
   assert.equal(balanceForAccount(accounts[0],txs),54500);
   assert.equal(balanceForAccount(accounts[1],txs),11800);
   assert.equal(consolidatedBalance(accounts,txs),66300);
+});
+test('benefício alimentação permanece separado do saldo bancário',()=>{
+  const benefit={id:'benefit',name:'Ticket alimentação',kind:'Benefício',balanceCents:24000};
+  const bank={id:'bank',name:'Conta corrente',kind:'Conta',balanceCents:50000};
+  assert.equal(isBenefitAccount(benefit),true);
+  assert.deepEqual(bankAccounts([bank,benefit]),[bank]);
+  assert.equal(consolidatedBalance(bankAccounts([bank,benefit]),[]),50000);
+  assert.equal(balanceForAccount(benefit,[]),24000);
 });
 test('totais mensais não contam transferência ou pendência como receita/despesa realizada',()=>{
   assert.deepEqual(totalsForMonth(txs,'2026-10'),{incomeCents:10000,expenseCents:2500,resultCents:7500});
