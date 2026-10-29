@@ -1,0 +1,11 @@
+{
+  "name": "FinTrack — Finanças pessoais",
+  "short_name": "FinTrack",
+  "description": "Organize suas finanças pessoais com clareza.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7f7",
+  "theme_color": "#f5f7f7",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
+

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f7f7" />
+  <meta name="description" content="FinTrack — suas finanças no seu ritmo." />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title>FinTrack — sua vida financeira, em equilíbrio</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="FinTrack início"><span class="brand-mark">f</span><span>fintrack</span></a>
+      <div class="workspace-label">SEU ESPAÇO</div>
+      <nav class="side-nav" aria-label="Navegação principal">
+        <button class="nav-item active" data-page="home"><span class="nav-icon">⌂</span>Início</button>
+        <button class="nav-item" data-page="statement"><span class="nav-icon">≋</span>Extrato</button>
+        <button class="nav-item" data-page="planning"><span class="nav-icon">◷</span>Planejamento</button>
+        <button class="nav-item" data-page="cards"><span class="nav-icon">▤</span>Cartões</button>
+        <button class="nav-item" data-page="accounts"><span class="nav-icon">▣</span>Contas</button>
+        <button class="nav-item" data-page="reports"><span class="nav-icon">▥</span>Relatórios</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="local-status"><span class="status-dot"></span><div><b>Modo local</b><small>Dados neste dispositivo</small></div></div>
+        <button class="nav-item" id="settingsBtn"><span class="nav-icon">⚙</span>Preferências</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">f</span><span>fintrack</span></div>
+        <div class="topbar-spacer"></div>
+        <button class="icon-button" id="themeBtn" aria-label="Alternar tema" title="Alternar tema">☼</button>
+        <button class="avatar" aria-label="Perfil">M</button>
+      </header>
+      <div class="content" id="content"></div>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Navegação móvel">
+    <button class="mobile-nav-item active" data-page="home"><span>⌂</span>Início</button>
+    <button class="mobile-nav-item" data-page="statement"><span>≋</span>Extrato</button>
+    <button class="mobile-add" id="mobileAdd" aria-label="Adicionar movimentação">＋</button>
+    <button class="mobile-nav-item" data-page="planning"><span>◷</span>Planejar</button>
+    <button class="mobile-nav-item" data-page="more"><span>···</span>Mais</button>
+  </nav>
+
+  <dialog id="transactionDialog" class="modal">
+    <form id="transactionForm" method="dialog">
+      <div class="modal-heading"><div><span class="eyebrow">NOVA MOVIMENTAÇÃO</span><h2 id="formTitle">Adicionar lançamento</h2></div><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div>
+      <input type="hidden" id="editId" />
+      <div class="segmented" role="tablist" aria-label="Tipo de movimentação">
+        <button type="button" class="segment active" data-type="expense">Despesa</button><button type="button" class="segment" data-type="income">Receita</button><button type="button" class="segment" data-type="transfer">Transferência</button>
+      </div>
+      <input type="hidden" id="transactionType" value="expense" />
+      <label class="field amount-field"><span>Valor</span><div class="amount-input"><span>R$</span><input id="amount" inputmode="decimal" placeholder="0,00" required /></div></label>
+      <label class="field"><span>Descrição</span><input id="description" placeholder="Ex.: mercado, salário..." required maxlength="80" /></label>
+      <div class="field-row" id="categoryRow"><label class="field"><span>Categoria</span><select id="category"></select></label><label class="field"><span>Conta</span><select id="account"></select></label></div>
+      <div class="field-row hidden" id="transferRow"><label class="field"><span>De</span><select id="fromAccount"></select></label><label class="field"><span>Para</span><select id="toAccount"></select></label></div>
+      <div class="field-row"><label class="field"><span>Data</span><input id="date" type="date" required /></label><label class="field"><span>Status</span><select id="status"><option value="realized">Realizado</option><option value="pending">Pendente</option></select></label></div>
+      <label class="field" id="paymentField"><span>Forma de pagamento</span><select id="payment"><option>Pix</option><option>Débito</option><option>Dinheiro</option><option>Boleto</option><option>Transferência</option><option>Outro</option></select></label>
+      <div class="form-error" id="formError" role="alert"></div>
+      <div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button primary" type="submit">Salvar movimentação</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog" class="modal"><form method="dialog" id="settingsForm"><div class="modal-heading"><div><span class="eyebrow">PREFERÊNCIAS</span><h2>Seu espaço</h2></div><button type="button" class="icon-button close-dialog">×</button></div><label class="field"><span>Nome para saudação</span><input id="userName" maxlength="40" /></label><div class="settings-row"><div><b>Backup dos seus dados</b><small>Exporte ou restaure um arquivo JSON local.</small></div><button type="button" class="button secondary" id="exportBackup">Exportar</button></div><div class="settings-row"><div><b>Restaurar backup</b><small>Os dados atuais serão substituídos.</small></div><label class="button secondary file-label">Importar<input type="file" id="importBackup" accept="application/json" hidden /></label></div><div class="settings-row"><div><b>Importar movimentações</b><small>Mescle um CSV exportado pelo FinTrack.</small></div><label class="button secondary file-label">CSV<input type="file" id="csvImport" accept=".csv,text/csv" hidden /></label></div><div class="modal-actions"><button class="button primary" type="submit">Salvar</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
+
