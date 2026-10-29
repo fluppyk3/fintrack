@@ -102,7 +102,7 @@ import { applyObligationPayment, balanceForAccount, budgetUsage, consolidatedBal
   el('#themeBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');db.theme=document.body.classList.contains('dark')?'dark':'light';localStorage.setItem(STORE,JSON.stringify(db))});
   if(db.theme==='dark')document.body.classList.add('dark');
   el('#mobileAdd').addEventListener('click',()=>openTransaction('expense'));
-  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js?v=5').catch(()=>{});
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js?v=6').catch(()=>{});
   if(!db.profile.ready||localStorage.getItem('fintrack.local.session')!=='active'){el('#welcomeGate').classList.remove('hidden');if(db.profile.ready){el('#welcomeName').required=false;el('#welcomeName').closest('.field').classList.add('hidden');el('#welcomeEmail').value=db.profile.email;el('#welcomeTitle').textContent='Acesse seu perfil local';el('#welcomeForm button[type="submit"]').textContent='Entrar no meu FinTrack'}}
   render();
 })();
