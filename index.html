@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#f5f7f7" />
   <meta name="description" content="FinTrack — suas finanças no seu ritmo." />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
   <title>FinTrack — sua vida financeira, em equilíbrio</title>
 </head>
 <body>
@@ -69,7 +69,7 @@
 
   <dialog id="settingsDialog" class="modal"><form method="dialog" id="settingsForm"><div class="modal-heading"><div><span class="eyebrow">PREFERÊNCIAS</span><h2>Seu espaço</h2></div><button type="button" class="icon-button close-dialog">×</button></div><label class="field"><span>Nome para saudação</span><input id="userName" maxlength="40" /></label><div class="settings-row"><div><b>Backup dos seus dados</b><small>Exporte ou restaure um arquivo JSON local.</small></div><button type="button" class="button secondary" id="exportBackup">Exportar</button></div><div class="settings-row"><div><b>Restaurar backup</b><small>Os dados atuais serão substituídos.</small></div><label class="button secondary file-label">Importar<input type="file" id="importBackup" accept="application/json" hidden /></label></div><div class="settings-row"><div><b>Importar movimentações</b><small>Mescle um CSV exportado pelo FinTrack.</small></div><label class="button secondary file-label">CSV<input type="file" id="csvImport" accept=".csv,text/csv" hidden /></label></div><div class="modal-actions"><button class="button primary" type="submit">Salvar</button></div></form></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="/app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
 

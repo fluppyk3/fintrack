@@ -84,7 +84,7 @@ import { balanceForAccount, budgetUsage, consolidatedBalance, isRealized, totals
   el('#themeBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');db.theme=document.body.classList.contains('dark')?'dark':'light';localStorage.setItem(STORE,JSON.stringify(db))});
   if(db.theme==='dark')document.body.classList.add('dark');
   el('#mobileAdd').addEventListener('click',()=>openTransaction('expense'));
-  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
   render();
 })();
 
