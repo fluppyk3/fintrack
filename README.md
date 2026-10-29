@@ -4,7 +4,7 @@ Aplicativo web responsivo e instalável para registro local de movimentações p
 
 ## FinTrack Dark Analytics
 
-O painel inicial usa um tema azul-marinho, indicadores em verde-turquesa, evolução de saldo em SVG e categorias/lançamentos filtrados pelo mês escolhido. Os cálculos continuam usando centavos inteiros e as regras de `finance.js`; o seletor só altera a visualização. A linha histórica é exibida apenas quando há movimentações realizadas suficientes para formar um histórico.
+O painel segue a direção visual do pin de carteira digital fornecido pelo usuário: base verde-floresta escura, superfícies em camadas, texto claro e acentos verde-menta. A interface tem somente tema escuro, tokens de cor centralizados, estados de toque/foco, transições curtas e respeito a `prefers-reduced-motion`. O saldo usa SVG e categorias/lançamentos são filtrados pelo mês escolhido. Os cálculos continuam usando centavos inteiros e as regras de `finance.js`; o seletor só altera a visualização. A linha histórica é exibida apenas quando há movimentações realizadas suficientes para formar um histórico.
 
 Para acompanhar um benefício separado, cadastre uma conta com “Ticket”, “Refeição” ou “Alimentação” no nome e lance seus créditos e gastos nessa conta. Ela aparece separada no painel e não aumenta o saldo bancário consolidado. O FinTrack original não tinha campo próprio nem saldo inicial específico para esse benefício.
 
@@ -34,7 +34,7 @@ Aplicação publicada em [https://fluppyk3.github.io/fintrack/](https://fluppyk3
 - Limites mensais por categoria, resumo do mês e gráfico derivado dos lançamentos locais.
 - Cartões com compras no crédito à vista ou parceladas, faturas por vencimento, limite calculado dinamicamente e pagamento parcial ou total por conta bancária. A compra aparece como despesa uma única vez; a quitação da fatura só reduz o saldo bancário. Dias de fechamento e vencimento aceitam 1 a 31, limitados ao último dia real de cada mês.
 - Importação CSV com validação e detecção de duplicatas; exportação CSV e backup JSON restaurável, com confirmação e cópia de segurança automática.
-- Tema escuro premium e alternância claro/escuro, foto de perfil com upload de até 10 MB (imagem reduzida localmente), interface responsiva e cache do aplicativo para acesso offline após a primeira visita.
+- Tema escuro único, foto de perfil com upload de até 10 MB (imagem reduzida localmente), interface responsiva e cache do aplicativo para acesso offline após a primeira visita.
 - Testes automatizados das regras de saldo, transferências, orçamento, calendário, pagamentos parciais e cálculos de fatura/parcelas de cartão.
 
 ## Dados, sincronização e privacidade
