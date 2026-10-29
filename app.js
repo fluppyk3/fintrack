@@ -1,4 +1,4 @@
-import { applyObligationPayment, balanceForAccount, budgetUsage, consolidatedBalance, isRealized, obligationRemainingCents, totalsForMonth, validateTransaction } from './finance.js';
+import { applyObligationPayment, balanceForAccount, budgetUsage, consolidatedBalance, isRealized, obligationRemainingCents, totalsForMonth, validateTransaction } from './finance.js?v=6';
 
 (() => {
   'use strict';
