@@ -35,7 +35,7 @@ Os dados são salvos em `localStorage` no navegador/dispositivo atual. Não há 
 
 ## Limitações conhecidas
 
-Este é um MVP funcional de controle local, não um banco conectado. Ainda não implementa pagamentos parciais, recorrências, parcelas, compras/faturas de cartão, cotações/operações de cripto, projeção de 12 meses, importação CSV, resolução de conflitos, autenticação, sincronização ou testes de isolamento. Não são exibidos preços cripto nem movimentações financeiras demonstrativas.
+Este é um MVP funcional de controle local, não um banco conectado. Ainda não implementa pagamentos parciais, recorrências, parcelas, compras/faturas de cartão, cotações/operações de cripto, projeção de 12 meses, resolução de conflitos, autenticação, sincronização ou testes de isolamento. Não são exibidos preços cripto nem movimentações financeiras demonstrativas.
 
 O service worker armazena apenas os arquivos do app; os dados locais permanecem no armazenamento do navegador. Para instalar no Android, abra a aplicação servida em HTTPS no Chrome e use “Instalar app”/“Adicionar à tela inicial”. No PC, abra o endereço no navegador; instalação PWA é oferecida por navegadores compatíveis.
 
