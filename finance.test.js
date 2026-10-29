@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { accountWithCurrentBalance, addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, bankAccounts, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, isBenefitAccount, nextObligationDate, obligationRemainingCents, splitInstallmentAmounts, totalsForMonth, validateTransaction } from './finance.js';
+import { accountWithCurrentBalance, addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, bankAccounts, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, isBenefitAccount, nextObligationDate, obligationRemainingCents, obligationsOpenTotalCents, reopenCardInvoice, splitInstallmentAmounts, totalsForMonth, undoCardInvoicePayment, validateTransaction } from './finance.js';
 
 const accounts = [{id:'a',balanceCents:50000},{id:'b',balanceCents:10000}];
 const txs = [
@@ -48,6 +48,11 @@ test('orçamento inclui compromissos do mês e não duplica pagamento pendente v
   assert.equal(budgetUsage([],'Alimentação','2026-10',obligations),10000);
   assert.equal(budgetUsage([],'Alimentação','2026-09',obligations),0);
 });
+test('total em aberto usa o saldo integral da obrigação e desconta sua pendência vinculada',()=>{
+ const obligations=[{id:'loan',status:'active',installmentCents:10000,installmentsRemaining:3,currentPaidCents:2500},{id:'bill',status:'active',installmentCents:5000,installmentsRemaining:1,currentPaidCents:0}];
+ const pending=[{id:'p1',type:'expense',status:'pending',amountCents:3000,obligationId:'loan'},{id:'p2',type:'expense',status:'pending',amountCents:2000,obligationId:null}];
+ assert.equal(obligationsOpenTotalCents(obligations,pending),29500);
+});
 test('parcelamento mensal respeita fim do mês e ano bissexto',()=>{
   assert.equal(addCalendarMonths('2026-01-31',1),'2026-02-28');
   assert.equal(addCalendarMonths('2028-01-31',1),'2028-02-29');
@@ -94,4 +99,24 @@ test('pagamento parcial da fatura reduz limite e débito bancário sem duplicar 
  assert.throws(()=>applyCardInvoicePayment(complete,1,'2026-10-31'),/quitada/);
  const account={id:'bank',balanceCents:20000};const purchase={type:'expense',amountCents:10000,accountId:null,status:'realized',date:'2026-10-29'};const payment={type:'card_payment',amountCents:4000,accountId:'bank',status:'realized',date:'2026-10-29'};
  assert.equal(balanceForAccount(account,[purchase,payment]),16000);assert.equal(totalsForMonth([purchase,payment],'2026-10').expenseCents,10000);
+});
+
+test('status antigo de fatura paga não bloqueia saldo em aberto e pode ser reaberta com segurança',()=>{
+ const stale={id:'stale',cardId:'c',amountCents:10000,paidCents:4000,status:'paid',payments:[]};
+ const resumed=applyCardInvoicePayment(stale,2000,'2026-10-31');
+ assert.equal(resumed.paidCents,6000);
+ assert.equal(resumed.status,'partial');
+ const reopened=reopenCardInvoice({...stale,paidCents:10000,payments:[{id:'p1',amountCents:10000}]});
+ assert.equal(reopened.paidCents,0);
+ assert.equal(reopened.status,'open');
+ assert.deepEqual(reopened.payments,[]);
+});
+
+test('desfazer pagamento de fatura reabre o saldo e preserva os pagamentos restantes',()=>{
+ const invoice={id:'i',cardId:'c',amountCents:10000,paidCents:7000,status:'partial',payments:[{id:'p1',amountCents:3000,date:'2026-10-28'},{id:'p2',amountCents:4000,date:'2026-10-29'}]};
+ const undone=undoCardInvoicePayment(invoice,'p2');
+ assert.equal(undone.paidCents,3000);
+ assert.equal(undone.status,'partial');
+ assert.equal(cardInvoiceOutstandingCents(undone),7000);
+ assert.deepEqual(undone.payments.map(p=>p.id),['p1']);
 });

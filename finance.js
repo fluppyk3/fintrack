@@ -113,10 +113,27 @@ export function cardUsedCents(cardId,invoices) { return invoices.filter(invoice=
 export function applyCardInvoicePayment(invoice,paymentCents,paymentDate) {
   const outstanding=cardInvoiceOutstandingCents(invoice);
   if(!Number.isSafeInteger(paymentCents)||paymentCents<=0) throw new Error('O pagamento deve ser maior que zero.');
-  if(invoice.status==='paid'||outstanding===0) throw new Error('Esta fatura já está quitada.');
+  // The amount paid is authoritative. A stale `paid` status must not block a
+  // payment when the invoice still has an outstanding balance.
+  if(outstanding===0) throw new Error('Esta fatura já está quitada.');
   if(paymentCents>outstanding) throw new Error('O pagamento ultrapassa o saldo desta fatura.');
   const paidCents=(invoice.paidCents||0)+paymentCents;
   return {...invoice,paidCents,status:paidCents===invoice.amountCents?'paid':'partial',lastPaymentDate:paymentDate};
+}
+
+export function reopenCardInvoice(invoice) {
+  if(!invoice||!Number.isSafeInteger(invoice.amountCents)||invoice.amountCents<=0) throw new Error('Esta fatura não tem um valor válido para reabrir.');
+  return {...invoice,paidCents:0,status:'open',payments:[],lastPaymentDate:null};
+}
+
+/** Removes a mistaken invoice payment while keeping the invoice and ledger in sync. */
+export function undoCardInvoicePayment(invoice,paymentId) {
+  const payments=Array.isArray(invoice.payments)?invoice.payments:[];
+  const payment=payments.find(item=>item.id===paymentId);
+  if(!payment) throw new Error('O pagamento não foi encontrado nesta fatura.');
+  const remainingPayments=payments.filter(item=>item.id!==paymentId);
+  const paidCents=Math.max(0,(invoice.paidCents||0)-(payment.amountCents||0));
+  return {...invoice,paidCents,status:paidCents===0?'open':paidCents>=invoice.amountCents?'paid':'partial',payments:remainingPayments,lastPaymentDate:remainingPayments.at(-1)?.date||null};
 }
 
 /** Records a partial or complete installment without reducing the obligation twice. */
@@ -146,6 +163,15 @@ export function obligationRemainingCents(obligation) {
   const remaining = obligation.installmentsRemaining;
   if (!Number.isInteger(remaining)) return null;
   return Math.max(0, obligation.installmentCents * remaining - (obligation.currentPaidCents || 0));
+}
+
+export function obligationsOpenTotalCents(obligations, transactions = []) {
+  const pendingByObligation=new Map();
+  transactions.filter(tx=>tx.type==='expense'&&tx.status==='pending'&&tx.obligationId).forEach(tx=>pendingByObligation.set(tx.obligationId,(pendingByObligation.get(tx.obligationId)||0)+tx.amountCents));
+  return obligations.filter(item=>item.status==='active').reduce((sum,item)=>{
+    const total=obligationRemainingCents(item)??Math.max(0,item.installmentCents-(item.currentPaidCents||0));
+    return sum+Math.max(0,total-(pendingByObligation.get(item.id)||0));
+  },0);
 }
 
 export function validateTransaction(tx, accountIds) {

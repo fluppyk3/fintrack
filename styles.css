@@ -89,10 +89,14 @@ a{color:inherit}
 .ticket-pill .ticket-configure{min-height:28px;margin:-4px -4px -4px 1px;padding:4px 8px;border:1px solid rgba(142,240,183,.2);border-radius:999px;background:rgba(3,33,19,.32);color:#b2f3ca;font-size:9px;font-weight:700;transition:background .16s ease,transform .14s var(--ease)}
 .ticket-pill .ticket-configure:hover{background:rgba(53,217,141,.15)}
 .ticket-pill .ticket-configure:active{transform:scale(.96)}
-.balance-footer{display:flex;gap:clamp(24px,6vw,64px);margin-top:22px;padding-top:15px;border-top:1px solid rgba(223,255,233,.13)}
+.balance-footer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px;padding-top:15px;border-top:1px solid rgba(223,255,233,.13)}
 .balance-footer small,.balance-footer b{display:block}
 .balance-footer small{margin-bottom:5px;color:#aac2b0;font-size:9px}
 .balance-footer b{font-size:13px;font-weight:690}
+.loan-shortcut{min-width:0}
+.loan-shortcut>span{display:block;margin-top:4px;color:var(--muted-2);font-size:9px}
+.loan-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.loan-actions .pending-link{font-size:9px}
 .pending-link{min-height:26px;margin:4px 0 0;padding:2px 0;border:0;background:none;color:#b2f3ca;font-size:9px;text-align:left;cursor:pointer}
 .pending-link:hover{text-decoration:underline}
 .evolution-card{min-height:310px;padding:22px 23px}
@@ -180,6 +184,12 @@ a{color:inherit}
 .due-info{flex:1;min-width:0}
 .due-info b{display:block;overflow:hidden;color:var(--ink);font-size:10px;text-overflow:ellipsis;white-space:nowrap}
 .due-info small{display:block;margin-top:4px;color:var(--muted-2);font-size:8px}
+.invoice-row{padding:0 12px 12px;border-top:1px solid var(--line-soft)}
+.invoice-row .due-item{border-top:0;padding-bottom:5px}
+.invoice-payments{padding:7px 0 0 48px}
+.invoice-payments>small,.invoice-recovery small{display:block;color:var(--muted-2);font-size:8px}
+.invoice-payment{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;color:var(--muted);font-size:9px}
+.invoice-recovery{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;padding:6px 0 0 48px}
 .due-amount{color:var(--ink);font-size:10px;font-weight:700}
 .text-button{padding:4px 0;border:0;background:transparent;color:var(--green);font-size:10px;font-weight:670;transition:color .15s ease,transform .14s var(--ease)}
 .text-button:hover{color:#8ef0b7}

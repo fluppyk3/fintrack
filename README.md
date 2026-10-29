@@ -10,6 +10,10 @@ Configure o ticket alimentação pelo botão **Configurar** no cartão de saldo 
 
 Os limites do planejamento descontam despesas realizadas e reservam pagamentos pendentes e compromissos ativos vencidos ou previstos até o fim do mês. Cada pagamento pode ser associado a uma conta e, opcionalmente, a uma obrigação; ao confirmar um pagamento vinculado, o saldo da conta e o compromisso são atualizados juntos, sem duplicar o orçamento.
 
+O resumo de **Total a pagar** considera o saldo restante integral das obrigações com quantidade de parcelas definida e as despesas pendentes; um pagamento vinculado não é somado duas vezes. Obrigações recorrentes sem quantidade final exibem a próxima parcela como referência, pois não há um total final cadastrado. A área **Empréstimos** do saldo usa os mesmos registros da seção **Contas e parcelas** e abre o formulário de empréstimo já existente.
+
+Em **Cartões**, faturas abertas e quitadas ficam separadas. Pagamentos registrados podem ser desfeitos individualmente; **Reabrir fatura** remove seus pagamentos vinculados e os lançamentos correspondentes, retornando o valor às contas. Ambas as ações pedem confirmação e preservam as compras da fatura.
+
 ## Rodar localmente
 
 Sirva esta pasta em HTTP (service workers não funcionam em `file://`). Com Node.js instalado, por exemplo:
