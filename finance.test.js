@@ -39,7 +39,14 @@ test('totais mensais não contam transferência ou pendência como receita/despe
   assert.deepEqual(totalsForMonth(txs,'2026-10'),{incomeCents:10000,expenseCents:2500,resultCents:7500});
 });
 test('orçamento usa despesas realizadas da categoria e competência selecionada',()=>{
-  assert.equal(budgetUsage(txs,'Alimentação','2026-10'),2500);
+  assert.equal(budgetUsage(txs,'Alimentação','2026-10'),7500);
+});
+test('orçamento inclui compromissos do mês e não duplica pagamento pendente vinculado',()=>{
+  const obligations=[{id:'bill',status:'active',category:'Alimentação',dueDate:'2026-10-20',installmentCents:10000,currentPaidCents:0}];
+  const linkedPending={type:'expense',amountCents:4000,accountId:'a',obligationId:'bill',status:'pending',date:'2026-10-20',category:'Alimentação'};
+  assert.equal(budgetUsage([linkedPending],'Alimentação','2026-10',obligations),10000);
+  assert.equal(budgetUsage([],'Alimentação','2026-10',obligations),10000);
+  assert.equal(budgetUsage([],'Alimentação','2026-09',obligations),0);
 });
 test('parcelamento mensal respeita fim do mês e ano bissexto',()=>{
   assert.equal(addCalendarMonths('2026-01-31',1),'2026-02-28');

@@ -8,6 +8,8 @@ O painel segue a direção visual do pin de carteira digital fornecido pelo usu�
 
 Configure o ticket alimentação pelo botão **Configurar** no cartão de saldo do painel. Informe o nome e o saldo disponível atual; o benefício fica em uma conta separada, fora do saldo bancário consolidado. Lançamentos existentes são preservados e continuam compondo o saldo do benefício. Use **Ajustar** nesse mesmo cartão para corrigir o saldo disponível mais tarde.
 
+Os limites do planejamento descontam despesas realizadas e reservam pagamentos pendentes e compromissos ativos vencidos ou previstos até o fim do mês. Cada pagamento pode ser associado a uma conta e, opcionalmente, a uma obrigação; ao confirmar um pagamento vinculado, o saldo da conta e o compromisso são atualizados juntos, sem duplicar o orçamento.
+
 ## Rodar localmente
 
 Sirva esta pasta em HTTP (service workers não funcionam em `file://`). Com Node.js instalado, por exemplo:

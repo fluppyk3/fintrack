@@ -42,8 +42,28 @@ export function bankAccounts(accounts) {
   return accounts.filter(account => !isBenefitAccount(account));
 }
 
-export function budgetUsage(transactions, category, month) {
-  return transactions.filter(tx => tx.date.startsWith(month) && isRealized(tx) && tx.type === 'expense' && tx.category === category).reduce((sum, tx) => sum + tx.amountCents, 0);
+export function realizedBudgetUsage(transactions, category, month) {
+  return transactions.filter(tx => tx.date?.startsWith(month) && isRealized(tx) && tx.type === 'expense' && tx.category === category).reduce((sum, tx) => sum + tx.amountCents, 0);
+}
+
+export function pendingBudgetUsage(transactions, category, month) {
+  return transactions.filter(tx => tx.date?.slice(0, 7) <= month && tx.status === 'pending' && tx.type === 'expense' && tx.category === category).reduce((sum, tx) => sum + tx.amountCents, 0);
+}
+
+export function obligationBudgetUsage(obligations, transactions, category, month) {
+  const pendingByObligation = new Map();
+  transactions.filter(tx => tx.date?.slice(0, 7) <= month && tx.status === 'pending' && tx.type === 'expense' && tx.obligationId).forEach(tx => {
+    pendingByObligation.set(tx.obligationId, (pendingByObligation.get(tx.obligationId) || 0) + tx.amountCents);
+  });
+  return obligations.filter(item => item.status === 'active' && item.category === category && item.dueDate?.slice(0, 7) <= month).reduce((sum, item) => {
+    const remaining = Math.max(0, item.installmentCents - (item.currentPaidCents || 0) - (pendingByObligation.get(item.id) || 0));
+    return sum + remaining;
+  }, 0);
+}
+
+/** Budget reservation includes realized expenses, pending payments, and due obligations without double-counting linked payments. */
+export function budgetUsage(transactions, category, month, obligations = []) {
+  return realizedBudgetUsage(transactions, category, month) + pendingBudgetUsage(transactions, category, month) + obligationBudgetUsage(obligations, transactions, category, month);
 }
 
 /** Add calendar months without overflowing into the following month (Jan 31 -> Feb 28/29). */

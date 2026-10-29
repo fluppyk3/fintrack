@@ -93,6 +93,8 @@ a{color:inherit}
 .balance-footer small,.balance-footer b{display:block}
 .balance-footer small{margin-bottom:5px;color:#aac2b0;font-size:9px}
 .balance-footer b{font-size:13px;font-weight:690}
+.pending-link{min-height:26px;margin:4px 0 0;padding:2px 0;border:0;background:none;color:#b2f3ca;font-size:9px;text-align:left;cursor:pointer}
+.pending-link:hover{text-decoration:underline}
 .evolution-card{min-height:310px;padding:22px 23px}
 .panel{padding:21px}
 .panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:15px}

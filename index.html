@@ -7,7 +7,7 @@
   <meta name="description" content="FinTrack — suas finanças no seu ritmo." />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=13" />
   <title>FinTrack — seu dinheiro, sob seu controle</title>
 </head>
 <body>
@@ -69,6 +69,7 @@
       <label class="field amount-field"><span>Valor</span><div class="amount-input"><span>R$</span><input id="amount" inputmode="decimal" placeholder="0,00" required /></div></label>
       <label class="field"><span>Descrição</span><input id="description" placeholder="Ex.: mercado, salário..." required maxlength="80" /></label>
       <div class="field-row" id="categoryRow"><label class="field"><span>Categoria</span><select id="category"></select></label><label class="field" id="accountField"><span>Conta</span><select id="account"></select></label></div>
+      <label class="field hidden" id="obligationLinkField"><span>Compromisso vinculado</span><select id="transactionObligation"></select></label>
       <div class="field-row hidden" id="transferRow"><label class="field"><span>De</span><select id="fromAccount"></select></label><label class="field"><span>Para</span><select id="toAccount"></select></label></div>
       <div class="field-row"><label class="field"><span>Data</span><input id="date" type="date" required /></label><label class="field" id="statusField"><span>Status</span><select id="status"><option value="realized">Realizado</option><option value="pending">Pendente</option></select></label></div>
       <label class="field" id="paymentField"><span>Forma de pagamento</span><select id="payment"><option>Pix</option><option>Débito</option><option>Dinheiro</option><option>Boleto</option><option>Transferência</option><option>Crédito</option><option>Outro</option></select></label>
@@ -85,6 +86,6 @@
   <dialog id="cardPaymentDialog" class="modal"><form id="cardPaymentForm"><div class="modal-heading"><div><span class="eyebrow">FATURA DE CARTÃO</span><h2>Registrar pagamento</h2></div><button type="button" class="icon-button close-dialog">×</button></div><input type="hidden" id="cardInvoiceId"/><div id="cardPaymentContext" class="payment-context"></div><label class="field"><span>Valor pago (R$)</span><input id="cardPaymentAmount" inputmode="decimal" required/></label><label class="field"><span>Conta de saída</span><select id="cardPaymentAccount"></select></label><label class="field"><span>Data efetiva</span><input id="cardPaymentDate" type="date" required/></label><div id="cardPaymentError" class="form-error" role="alert"></div><div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button primary" type="submit">Confirmar pagamento</button></div></form></dialog>
   <dialog id="deleteDataDialog" class="modal delete-data-dialog"><form id="deleteDataForm"><div class="modal-heading"><div><span class="eyebrow danger-eyebrow">AÇÃO PERMANENTE</span><h2>Apagar todos os dados?</h2></div><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div><p>Seu perfil, saldos, cartões, lançamentos, obrigações, categorias e preferências serão removidos deste navegador. Isso não pode ser desfeito.</p><p class="form-hint">Se quiser manter uma cópia, cancele e exporte seu backup antes.</p><label class="field"><span>Digite APAGAR para confirmar</span><input id="deleteDataConfirmation" autocomplete="off" spellcheck="false" required/></label><div id="deleteDataError" class="form-error" role="alert"></div><div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button danger-button" id="confirmDeleteData" type="submit" disabled>Apagar definitivamente</button></div></form></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="app.js?v=16"></script>
+  <script type="module" src="app.js?v=17"></script>
 </body>
 </html>
