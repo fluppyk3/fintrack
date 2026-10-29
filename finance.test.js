@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addCalendarMonths, balanceForAccount, budgetUsage, consolidatedBalance, totalsForMonth, validateTransaction } from './finance.js';
+import { addCalendarMonths, applyObligationPayment, balanceForAccount, budgetUsage, consolidatedBalance, nextObligationDate, obligationRemainingCents, totalsForMonth, validateTransaction } from './finance.js';
 
 const accounts = [{id:'a',balanceCents:50000},{id:'b',balanceCents:10000}];
 const txs = [
@@ -32,5 +32,25 @@ test('valida transferências contra auto transferência e contas ausentes',()=>{
   assert.equal(validateTransaction(tx,new Set(['a','b'])),null);
   assert.match(validateTransaction({...tx,toAccountId:'a'},new Set(['a','b'])),/duas contas/);
   assert.match(validateTransaction({...tx,accountId:'missing'},new Set(['a','b'])),/inexistente/);
+});
+test('pagamentos parciais só concluem e reduzem parcela quando o total é liquidado',()=>{
+  const obligation={id:'loan',status:'active',installmentCents:30000,installmentsRemaining:3,currentPaidCents:0,dueDate:'2026-01-31',frequency:'monthly'};
+  const partial=applyObligationPayment(obligation,10000,'2026-01-10');
+  assert.equal(partial.currentPaidCents,10000);
+  assert.equal(partial.installmentsRemaining,3);
+  assert.equal(partial.dueDate,'2026-01-31');
+  assert.equal(obligationRemainingCents(partial),80000);
+  const complete=applyObligationPayment(partial,20000,'2026-01-20');
+  assert.equal(complete.currentPaidCents,0);
+  assert.equal(complete.installmentsRemaining,2);
+  assert.equal(complete.dueDate,'2026-02-28');
+  assert.equal(obligationRemainingCents(complete),60000);
+  assert.throws(()=>applyObligationPayment(complete,30001,'2026-01-20'),/ultrapassa/);
+});
+test('obrigações recorrentes rolam datas mensais e calendários semanais sem gerar transação automática',()=>{
+  assert.equal(nextObligationDate('2028-01-31','monthly'),'2028-02-29');
+  assert.equal(nextObligationDate('2026-10-29','weekly'),'2026-11-05');
+  assert.equal(nextObligationDate('2026-10-29','biweekly'),'2026-11-12');
+  assert.equal(nextObligationDate('2026-12-31','annual'),'2027-12-31');
 });
 

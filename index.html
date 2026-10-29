@@ -7,7 +7,7 @@
   <meta name="description" content="FinTrack — suas finanças no seu ritmo." />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
   <title>FinTrack — sua vida financeira, em equilíbrio</title>
 </head>
 <body>
@@ -21,6 +21,7 @@
         <button class="nav-item" data-page="planning"><span class="nav-icon">◷</span>Planejamento</button>
         <button class="nav-item" data-page="cards"><span class="nav-icon">▤</span>Cartões</button>
         <button class="nav-item" data-page="accounts"><span class="nav-icon">▣</span>Contas</button>
+        <button class="nav-item" data-page="obligations"><span class="nav-icon">◷</span>Contas e parcelas</button>
         <button class="nav-item" data-page="reports"><span class="nav-icon">▥</span>Relatórios</button>
       </nav>
       <div class="sidebar-bottom">
@@ -34,7 +35,7 @@
         <div class="mobile-brand"><span class="brand-mark">f</span><span>fintrack</span></div>
         <div class="topbar-spacer"></div>
         <button class="icon-button" id="themeBtn" aria-label="Alternar tema" title="Alternar tema">☼</button>
-        <button class="avatar" aria-label="Perfil">M</button>
+        <button class="avatar" aria-label="Abrir perfil" data-page="profile">M</button>
       </header>
       <div class="content" id="content"></div>
     </main>
@@ -47,6 +48,18 @@
     <button class="mobile-nav-item" data-page="planning"><span>◷</span>Planejar</button>
     <button class="mobile-nav-item" data-page="more"><span>···</span>Mais</button>
   </nav>
+
+  <section id="welcomeGate" class="welcome-gate hidden" aria-labelledby="welcomeTitle">
+    <form id="welcomeForm" class="welcome-card">
+      <span class="brand-mark">f</span><span class="eyebrow">SEU ESPAÇO FINANCEIRO</span>
+      <h1 id="welcomeTitle">Bem-vindo ao FinTrack</h1>
+      <p>Crie seu perfil local para personalizar sua experiência. Seus dados ficam neste navegador.</p>
+      <label class="field"><span>Como podemos chamar você?</span><input id="welcomeName" autocomplete="name" maxlength="40" required placeholder="Seu nome" /></label>
+      <label class="field"><span>E-mail</span><input id="welcomeEmail" type="email" autocomplete="email" maxlength="120" required placeholder="voce@email.com" /></label>
+      <button class="button primary" type="submit">Entrar no meu FinTrack</button>
+      <small>Perfil local, sem autenticação de servidor ou sincronização entre dispositivos. Não use como proteção de acesso.</small>
+    </form>
+  </section>
 
   <dialog id="transactionDialog" class="modal">
     <form id="transactionForm" method="dialog">
@@ -67,9 +80,11 @@
     </form>
   </dialog>
 
-  <dialog id="settingsDialog" class="modal"><form method="dialog" id="settingsForm"><div class="modal-heading"><div><span class="eyebrow">PREFERÊNCIAS</span><h2>Seu espaço</h2></div><button type="button" class="icon-button close-dialog">×</button></div><label class="field"><span>Nome para saudação</span><input id="userName" maxlength="40" /></label><div class="settings-row"><div><b>Backup dos seus dados</b><small>Exporte ou restaure um arquivo JSON local.</small></div><button type="button" class="button secondary" id="exportBackup">Exportar</button></div><div class="settings-row"><div><b>Restaurar backup</b><small>Os dados atuais serão substituídos.</small></div><label class="button secondary file-label">Importar<input type="file" id="importBackup" accept="application/json" hidden /></label></div><div class="settings-row"><div><b>Importar movimentações</b><small>Mescle um CSV exportado pelo FinTrack.</small></div><label class="button secondary file-label">CSV<input type="file" id="csvImport" accept=".csv,text/csv" hidden /></label></div><div class="modal-actions"><button class="button primary" type="submit">Salvar</button></div></form></dialog>
+  <dialog id="settingsDialog" class="modal"><form method="dialog" id="settingsForm"><div class="modal-heading"><div><span class="eyebrow">PREFERÊNCIAS</span><h2>Seu espaço</h2></div><button type="button" class="icon-button close-dialog">×</button></div><label class="field"><span>Nome para saudação</span><input id="userName" maxlength="40" /></label><label class="field"><span>E-mail do perfil</span><input id="userEmail" type="email" maxlength="120" /></label><div class="settings-row"><div><b>Backup dos seus dados</b><small>Exporte ou restaure um arquivo JSON local.</small></div><button type="button" class="button secondary" id="exportBackup">Exportar</button></div><div class="settings-row"><div><b>Restaurar backup</b><small>Os dados atuais serão substituídos.</small></div><label class="button secondary file-label">Importar<input type="file" id="importBackup" accept="application/json" hidden /></label></div><div class="settings-row"><div><b>Importar movimentações</b><small>Mescle um CSV exportado pelo FinTrack.</small></div><label class="button secondary file-label">CSV<input type="file" id="csvImport" accept=".csv,text/csv" hidden /></label></div><div class="modal-actions"><button class="button primary" type="submit">Salvar</button></div></form></dialog>
+  <dialog id="obligationDialog" class="modal"><form id="obligationForm"><div class="modal-heading"><div><span class="eyebrow">CONTAS, RECORRÊNCIAS E DÍVIDAS</span><h2 id="obligationTitle">Nova obrigação</h2></div><button type="button" class="icon-button close-dialog">×</button></div><input type="hidden" id="obligationId"/><label class="field"><span>Tipo</span><select id="obligationKind"><option value="bill">Conta normal</option><option value="water">Água</option><option value="electricity">Luz</option><option value="internet">Internet</option><option value="loan">Empréstimo</option><option value="installment">Compra parcelada</option><option value="subscription">Assinatura</option><option value="other">Outra obrigação</option></select></label><label class="field"><span>Descrição</span><input id="obligationName" maxlength="80" placeholder="Ex.: conta de água" required/></label><div class="field-row"><label class="field"><span>Valor de cada saída (R$)</span><input id="installmentAmount" inputmode="decimal" placeholder="0,00" required/></label><label class="field"><span>Quantas saídas faltam?</span><input id="installmentsRemaining" type="number" min="1" max="600" placeholder="1"/></label></div><p class="form-hint">Deixe em branco para uma conta recorrente sem quantidade final definida. Para conta normal, use 1.</p><div class="field-row"><label class="field"><span>Próximo vencimento</span><input id="obligationDueDate" type="date" required/></label><label class="field"><span>Frequência</span><select id="obligationFrequency"><option value="once">Uma vez</option><option value="daily">Diária</option><option value="weekly">Semanal</option><option value="biweekly">Quinzenal</option><option value="monthly">Mensal</option><option value="quarterly">Trimestral</option><option value="semiannual">Semestral</option><option value="annual">Anual</option></select></label></div><div class="field-row"><label class="field"><span>Categoria</span><select id="obligationCategory"></select></label><label class="field"><span>Conta de pagamento</span><select id="obligationAccount"></select></label></div><label class="field"><span>Forma de pagamento</span><select id="obligationPayment"><option>Pix</option><option>Débito</option><option>Dinheiro</option><option>Boleto</option><option>Débito automático</option><option>Transferência</option><option>Outro</option></select></label><div id="obligationError" class="form-error" role="alert"></div><div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button primary" type="submit">Salvar obrigação</button></div></form></dialog>
+  <dialog id="paymentDialog" class="modal"><form id="paymentForm"><div class="modal-heading"><div><span class="eyebrow">REGISTRAR SAÍDA</span><h2>Pagamento da parcela</h2></div><button type="button" class="icon-button close-dialog">×</button></div><input type="hidden" id="paymentObligationId"/><div id="paymentContext" class="payment-context"></div><label class="field"><span>Valor pago (R$)</span><input id="obligationPaymentAmount" inputmode="decimal" required/></label><label class="field"><span>Data efetiva</span><input id="obligationPaymentDate" type="date" required/></label><div id="paymentError" class="form-error" role="alert"></div><div class="modal-actions"><button type="button" class="button secondary close-dialog">Cancelar</button><button class="button primary" type="submit">Confirmar pagamento</button></div></form></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="app.js?v=5"></script>
+  <script type="module" src="app.js?v=6"></script>
 </body>
 </html>
 
