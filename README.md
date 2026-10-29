@@ -39,7 +39,7 @@ Aplicação publicada em [https://fluppyk3.github.io/fintrack/](https://fluppyk3
 
 ## Dados, sincronização e privacidade
 
-Os dados e o perfil são salvos em `localStorage` no navegador/dispositivo atual. O primeiro acesso é uma tela de perfil local, não uma autenticação segura: o e-mail não protege os dados e não há senha, backend ou sincronização entre dispositivos. O botão Sair encerra a sessão visual local, não bloqueia o navegador. Limpe os dados do navegador somente depois de exportar o backup. A sincronização exige configurar backend, autenticação real e políticas de acesso; nenhuma credencial ou serviço externo está embutido.
+Os dados e o perfil são salvos em `localStorage` no navegador/dispositivo atual. O primeiro acesso é uma tela de perfil local, não uma autenticação segura: o e-mail não protege os dados e não há senha, backend ou sincronização entre dispositivos. O botão Sair encerra a sessão visual local, não bloqueia o navegador. Na aba Meu perfil, “Apagar todos os dados” remove os dados do FinTrack deste navegador após confirmação digitada; exporte um backup antes se quiser guardar uma cópia. A sincronização exige configurar backend, autenticação real e políticas de acesso; nenhuma credencial ou serviço externo está embutido.
 
 ## Limitações conhecidas
 
