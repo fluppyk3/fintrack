@@ -12,6 +12,10 @@ npm start
 
 Abra o endereço informado no navegador. Não há dependências de runtime nem etapa de build neste MVP.
 
+## Publicação
+
+Aplicação publicada em [https://fluppyk3.github.io/fintrack/](https://fluppyk3.github.io/fintrack/). O workflow `.github/workflows/pages.yml` publica os arquivos estáticos na branch `main` após cada atualização.
+
 ## Recursos atuais
 
 - Lançamentos de receita, despesa e transferência entre contas.
