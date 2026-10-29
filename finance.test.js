@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addCalendarMonths, applyObligationPayment, balanceForAccount, budgetUsage, consolidatedBalance, nextObligationDate, obligationRemainingCents, totalsForMonth, validateTransaction } from './finance.js';
+import { addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, nextObligationDate, obligationRemainingCents, splitInstallmentAmounts, totalsForMonth, validateTransaction } from './finance.js';
 
 const accounts = [{id:'a',balanceCents:50000},{id:'b',balanceCents:10000}];
 const txs = [
@@ -54,3 +54,18 @@ test('obrigações recorrentes rolam datas mensais e calendários semanais sem g
   assert.equal(nextObligationDate('2026-12-31','annual'),'2027-12-31');
 });
 
+test('parcelas de cartão fecham em datas válidas e preservam cada centavo',()=>{
+ assert.deepEqual(splitInstallmentAmounts(10001,3),[3334,3334,3333]);
+ assert.equal(firstCardInvoiceDueDate('2026-10-29',28,10),'2026-12-10');
+ assert.equal(firstCardInvoiceDueDate('2026-10-20',25,31),'2026-10-31');
+ assert.equal(firstCardInvoiceDueDate('2028-02-20',25,31),'2028-02-29');
+});
+test('pagamento parcial da fatura reduz limite e débito bancário sem duplicar despesa',()=>{
+ const inv={id:'i',cardId:'c',amountCents:10000,paidCents:0,status:'open'};
+ const partial=applyCardInvoicePayment(inv,4000,'2026-10-29');
+ assert.equal(cardInvoiceOutstandingCents(partial),6000);assert.equal(cardUsedCents('c',[partial]),6000);
+ const complete=applyCardInvoicePayment(partial,6000,'2026-10-30');assert.equal(complete.status,'paid');assert.equal(cardUsedCents('c',[complete]),0);
+ assert.throws(()=>applyCardInvoicePayment(complete,1,'2026-10-31'),/quitada/);
+ const account={id:'bank',balanceCents:20000};const purchase={type:'expense',amountCents:10000,accountId:null,status:'realized',date:'2026-10-29'};const payment={type:'card_payment',amountCents:4000,accountId:'bank',status:'realized',date:'2026-10-29'};
+ assert.equal(balanceForAccount(account,[purchase,payment]),16000);assert.equal(totalsForMonth([purchase,payment],'2026-10').expenseCents,10000);
+});

@@ -24,12 +24,12 @@ Aplicação publicada em [https://fluppyk3.github.io/fintrack/](https://fluppyk3
 - Saldos por conta e total consolidado; ocultação do saldo.
 - Contas a pagar e compromissos editáveis: contas normais, água, luz, internet, empréstimos, compras parceladas, assinaturas e outras obrigações.
 - Frequência única, diária, semanal, quinzenal, mensal, trimestral, semestral e anual; quantidade de saídas restantes ou recorrência contínua.
-- Pagamentos totais ou parciais, histórico por obrigação, pausa/retomada e geração de uma despesa no extrato apenas após confirmação.
+- Pagamentos totais ou parciais, histórico por obrigação, pausa/retomada, desfazer o pagamento mais recente e remover obrigações sem pagamentos. O desfazer cancela o lançamento bancário associado e preserva o registro no histórico.
 - Limites mensais por categoria, resumo do mês e gráfico derivado dos lançamentos locais.
-- Cadastro de contas e cartões (compras e faturas de cartão ainda não implementadas).
+- Cartões com compras no crédito à vista ou parceladas, faturas por vencimento, limite calculado dinamicamente e pagamento parcial ou total por conta bancária. A compra aparece como despesa uma única vez; a quitação da fatura só reduz o saldo bancário. Dias de fechamento e vencimento aceitam 1 a 31, limitados ao último dia real de cada mês.
 - Importação CSV com validação e detecção de duplicatas; exportação CSV e backup JSON restaurável, com confirmação e cópia de segurança automática.
-- Tema claro/escuro, interface responsiva e cache do aplicativo para acesso offline após a primeira visita.
-- Testes automatizados das regras de saldo, transferências, orçamento, calendário e pagamento parcelado/parcial.
+- Tema claro/escuro, foto de perfil com upload de até 10 MB (imagem reduzida localmente), interface responsiva e cache do aplicativo para acesso offline após a primeira visita.
+- Testes automatizados das regras de saldo, transferências, orçamento, calendário, pagamentos parciais e cálculos de fatura/parcelas de cartão.
 
 ## Dados, sincronização e privacidade
 
@@ -37,7 +37,6 @@ Os dados e o perfil são salvos em `localStorage` no navegador/dispositivo atual
 
 ## Limitações conhecidas
 
-Este é um app de controle local, não um banco conectado. Obrigações não disparam pagamentos automaticamente; é necessário confirmar cada pagamento. Ainda não implementa compras/faturas de cartão, criptoativos, projeção de fluxo de caixa por 12 meses, sincronização, autenticação segura ou testes de isolamento entre usuários. Não são exibidos preços cripto nem movimentações financeiras demonstrativas.
+Este é um app de controle local, não um banco conectado. Obrigações e faturas não disparam pagamentos automaticamente; é necessário confirmar cada pagamento. Criptoativos, cotações de mercado, projeção de fluxo de caixa de 12 meses, sincronização e autenticação segura não estão implementados. Compras de cartão com faturas já estão integradas à contabilização local. Não são exibidos preços cripto nem movimentações financeiras demonstrativas.
 
 O service worker armazena apenas os arquivos do app; os dados locais permanecem no armazenamento do navegador. Para instalar no Android, abra a aplicação servida em HTTPS no Chrome e use “Instalar app”/“Adicionar à tela inicial”. No PC, abra o endereço no navegador; instalação PWA é oferecida por navegadores compatíveis.
-
