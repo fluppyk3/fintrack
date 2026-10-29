@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, bankAccounts, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, isBenefitAccount, nextObligationDate, obligationRemainingCents, splitInstallmentAmounts, totalsForMonth, validateTransaction } from './finance.js';
+import { accountWithCurrentBalance, addCalendarMonths, applyCardInvoicePayment, applyObligationPayment, bankAccounts, balanceForAccount, budgetUsage, cardInvoiceOutstandingCents, cardUsedCents, consolidatedBalance, firstCardInvoiceDueDate, isBenefitAccount, nextObligationDate, obligationRemainingCents, splitInstallmentAmounts, totalsForMonth, validateTransaction } from './finance.js';
 
 const accounts = [{id:'a',balanceCents:50000},{id:'b',balanceCents:10000}];
 const txs = [
@@ -23,6 +23,17 @@ test('benefício alimentação permanece separado do saldo bancário',()=>{
   assert.deepEqual(bankAccounts([bank,benefit]),[bank]);
   assert.equal(consolidatedBalance(bankAccounts([bank,benefit]),[]),50000);
   assert.equal(balanceForAccount(benefit,[]),24000);
+});
+test('configuração do ticket define saldo atual sem alterar lançamentos nem saldo bancário',()=>{
+  const benefit={id:'benefit',name:'Ticket alimentação',kind:'Conta',balanceCents:10000};
+  const bank={id:'bank',name:'Conta corrente',kind:'Conta',balanceCents:50000};
+  const movements=[{type:'income',amountCents:5000,accountId:'benefit',status:'realized'},{type:'expense',amountCents:2500,accountId:'benefit',status:'realized'}];
+  const configured=accountWithCurrentBalance(benefit,movements,40000);
+  assert.equal(balanceForAccount(configured,movements),40000);
+  assert.equal(configured.balanceCents,37500);
+  assert.equal(balanceForAccount(benefit,movements),12500);
+  assert.equal(consolidatedBalance(bankAccounts([bank,configured]),movements),50000);
+  assert.throws(()=>accountWithCurrentBalance(benefit,movements,-1),/saldo atual válido/);
 });
 test('totais mensais não contam transferência ou pendência como receita/despesa realizada',()=>{
   assert.deepEqual(totalsForMonth(txs,'2026-10'),{incomeCents:10000,expenseCents:2500,resultCents:7500});

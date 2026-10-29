@@ -6,7 +6,7 @@ Aplicativo web responsivo e instalável para registro local de movimentações p
 
 O painel segue a direção visual do pin de carteira digital fornecido pelo usuário: base verde-floresta escura, superfícies em camadas, texto claro e acentos verde-menta. A interface tem somente tema escuro, tokens de cor centralizados, estados de toque/foco, transições curtas e respeito a `prefers-reduced-motion`. O saldo usa SVG e categorias/lançamentos são filtrados pelo mês escolhido. Os cálculos continuam usando centavos inteiros e as regras de `finance.js`; o seletor só altera a visualização. A linha histórica é exibida apenas quando há movimentações realizadas suficientes para formar um histórico.
 
-Para acompanhar um benefício separado, cadastre uma conta com “Ticket”, “Refeição” ou “Alimentação” no nome e lance seus créditos e gastos nessa conta. Ela aparece separada no painel e não aumenta o saldo bancário consolidado. O FinTrack original não tinha campo próprio nem saldo inicial específico para esse benefício.
+Configure o ticket alimentação pelo botão **Configurar** no cartão de saldo do painel. Informe o nome e o saldo disponível atual; o benefício fica em uma conta separada, fora do saldo bancário consolidado. Lançamentos existentes são preservados e continuam compondo o saldo do benefício. Use **Ajustar** nesse mesmo cartão para corrigir o saldo disponível mais tarde.
 
 ## Rodar localmente
 

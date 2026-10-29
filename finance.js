@@ -22,6 +22,13 @@ export function balanceForAccount(account, transactions) {
   }, Number(account.balanceCents || 0));
 }
 
+/** Adjusts the account's opening balance so its current calculated balance matches the user's value. */
+export function accountWithCurrentBalance(account, transactions, targetCents) {
+  if (!Number.isSafeInteger(targetCents) || targetCents < 0) throw new Error('Informe um saldo atual válido.');
+  const currentCents = balanceForAccount(account, transactions);
+  return { ...account, balanceCents: Number(account.balanceCents || 0) + targetCents - currentCents };
+}
+
 export function consolidatedBalance(accounts, transactions) {
   return accounts.reduce((sum, account) => sum + balanceForAccount(account, transactions), 0);
 }
